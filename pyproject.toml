@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "icslint"
+version = "0.1.0"
+description = "Lint iCalendar (.ics) files against the requirements RFC 5545 actually states and the import failures Google, Outlook and Apple Calendar are documented to have."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "RakTikoo" }]
+keywords = ["icalendar", "ics", "lint", "validator", "calendar", "rfc5545"]
+dependencies = []
+
+[project.scripts]
+icslint = "icslint.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["icslint*"]
