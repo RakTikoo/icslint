@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+PRODID:-//icslint tests//EN
+VERSION:2.0
+BEGIN:VEVENT
+UID:fold1@test
+DTSTAMP:20260101T000000Z
+DTSTART:20260601T090000Z
+DTEND:20260601T100000Z
+SUMMARY:éééééééééééééééééééééééééééééééééx
+DESCRIPTION:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ yyyyyyyyyyyyyyyyyyyy
+END:VEVENT
+BEGIN:VEVENT
+UID:fold2@test
+DTSTAMP:20260101T000000Z
+DTSTART:20260602T090000Z
+DTEND:20260602T100000Z
+SUMMARY:Team lunch 🎉🎉
+DESCRIPTION:Caf
+ é meeting notes without delimiters
+END:VEVENT
+END:VCALENDAR

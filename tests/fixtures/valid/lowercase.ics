@@ -1,0 +1,13 @@
+begin:vcalendar
+prodid:-//icslint tests//en
+version:2.0
+begin:vevent
+uid:lower1@test
+dtstamp:20260101t000000z
+dtstart:20260601t090000z
+dtend:20260601t100000z
+rrule:freq=daily;count=5
+transp:opaque
+summary:lowercase everything
+end:vevent
+end:vcalendar
