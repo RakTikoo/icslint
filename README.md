@@ -11,6 +11,37 @@ $ pip install git+https://github.com/RakTikoo/icslint
 Needs Python 3.10+. Zero dependencies. Everything runs **offline**,
 on your machine: no upload, no network, no timezone database.
 
+Or from the release files (no registry involved): download
+`icslint-0.1.0-py3-none-any.whl` from the
+[v0.1.0 release](https://github.com/RakTikoo/icslint/releases/tag/v0.1.0)
+(check it against the release's SHA256SUMS if you want) and install it:
+
+```console
+pip install icslint-0.1.0-py3-none-any.whl
+```
+
+Or install straight from GitHub at the v0.1.0 tag:
+
+```console
+pip install git+https://github.com/RakTikoo/icslint@v0.1.0
+pipx install git+https://github.com/RakTikoo/icslint@v0.1.0
+uv tool install git+https://github.com/RakTikoo/icslint@v0.1.0
+```
+
+With Homebrew (macOS/Linux):
+
+```console
+brew tap RakTikoo/tools
+brew install RakTikoo/tools/icslint
+```
+
+With Scoop (Windows):
+
+```powershell
+scoop bucket add RakTikoo https://github.com/RakTikoo/scoop-bucket
+scoop install icslint
+```
+
 ## Usage
 
 ```console
