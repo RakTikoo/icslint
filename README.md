@@ -1,5 +1,7 @@
 # icslint — lint an iCalendar (.ics) file against RFC 5545 and documented importer failures
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/RakTikoo/icslint)
+
 **Check an `.ics` file against the requirements RFC 5545 actually states and the import failures Google, Outlook and Apple Calendar are documented to have — locally, in batch, in CI — and say nothing about anything that cannot be proven from the file alone.**
 
 ## Install
@@ -41,6 +43,8 @@ With Scoop (Windows):
 scoop bucket add RakTikoo https://github.com/RakTikoo/scoop-bucket
 scoop install icslint
 ```
+
+**For agent users:** this repository ships a `SKILL.md` for AI agents. Install it with `npx skills add RakTikoo/icslint`.
 
 ## Usage
 

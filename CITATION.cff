@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - name: RakTikoo
+title: "icslint: lint an iCalendar (.ics) file against RFC 5545 and documented importer failures"
+version: 0.1.0
+date-released: 2026-11-18
+license: MIT
+url: "https://github.com/RakTikoo/icslint"
+repository-code: "https://github.com/RakTikoo/icslint"
+abstract: >-
+  Lints iCalendar (.ics) files against the requirements RFC 5545 actually
+  states and the import failures Google, Outlook and Apple Calendar are
+  documented to have. Every rule cites the RFC or a named, dated importer
+  source; it says nothing about anything that cannot be proven from the file
+  alone.
+keywords:
+  - iCalendar
+  - RFC 5545
+  - lint
+  - calendar
+  - validation
