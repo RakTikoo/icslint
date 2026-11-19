@@ -107,6 +107,10 @@ These are not fine print — they define what this tool is.
   events, UID-sharing overrides, floating times, a leap second, the
   RFC's own VTIMEZONE example) and requires silence on every one.
 
+## Use with an AI agent
+
+This repo ships a [SKILL.md](SKILL.md) written to the Agent Skills open standard. If your coding agent supports skills, point it at this repo and it can install icslint, run it on your calendar files, and read the findings for you. The skill works when the repo is cloned under its real name (`icslint`) — a skill's name must match its folder.
+
 ## Rules
 
 67 rules: 58 errors, 9 warnings. Every rule cites RFC 5545 or a
