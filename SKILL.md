@@ -1,6 +1,6 @@
 ---
 name: icslint
-description: Lint an iCalendar (.ics) file against RFC 5545's actual requirements and the documented import failures of Google, Outlook and Apple Calendar. Use when asked to check, validate or lint an .ics or calendar file, debug a calendar import failure, or check calendar files in CI — for example "check this .ics file", "why did Google Calendar fail to import this calendar", or "lint these calendar files before I ship them". Checks structure, required properties, date/time forms, TZID and VTIMEZONE form, and RRULE syntax, each finding citing an RFC 5545 section or a named importer source.
+description: Lint an iCalendar (.ics) file against RFC 5545's actual requirements and the documented import failures of Google, Outlook and Apple Calendar. Use when asked to check, validate or lint an .ics or calendar file, debug a calendar import failure, or check calendar files in CI — for example "check this .ics file", "why did Google Calendar fail to import this calendar", or "lint these calendar files before I ship them". Checks structure, required properties, date/time forms, TZID and VTIMEZONE form, and RRULE syntax, each finding citing an RFC 5545 section or a named importer source. Not for ham-radio ADIF logs (that is adifcheck) or Darwin Core / GBIF occurrence files (that is dwccheck).
 license: MIT
 compatibility: Requires Python 3.10+. Zero dependencies; runs fully offline with no timezone database. Network is needed only to install.
 ---

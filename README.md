@@ -1,4 +1,4 @@
-# icslint
+# icslint — lint an iCalendar (.ics) file against RFC 5545 and documented importer failures
 
 **Check an `.ics` file against the requirements RFC 5545 actually states and the import failures Google, Outlook and Apple Calendar are documented to have — locally, in batch, in CI — and say nothing about anything that cannot be proven from the file alone.**
 
@@ -28,6 +28,18 @@ $ icslint check <file-or-folder> [--strict] [--format text|json]
   error (or any warning under `--strict`), `2` = usage error or
   unreadable input, always as a one-line message, never a traceback.
 - `--format json` emits the same findings as JSON for CI tooling.
+
+## Use in CI
+
+This repo is also a composite GitHub Action: it installs icslint from this repo at the ref you pin, and lints one file or a folder of calendar files. The step fails when icslint exits 1 (at least one error, or any warning with `strict` on) or 2 (usage error or unreadable input).
+
+```yaml
+- uses: RakTikoo/icslint@main
+  with:
+    path: calendars/
+```
+
+Set `strict: "true"` to make warnings fail the step too, and `format: json` for machine-readable findings; the defaults are `"false"` and `text`.
 
 ## Demo
 

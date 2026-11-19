@@ -1,0 +1,30 @@
+name: icslint
+description: Lint iCalendar (.ics) files against RFC 5545 and the documented import failures of Google, Outlook and Apple Calendar
+author: RakTikoo
+inputs:
+  path:
+    description: An .ics file, or a folder scanned recursively for .ics files
+    required: true
+  strict:
+    description: Treat warnings as failures too ("true" or "false")
+    required: false
+    default: "false"
+  format:
+    description: Output format — text or json
+    required: false
+    default: text
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install icslint from this repo
+      shell: bash
+      run: pip install "git+https://github.com/RakTikoo/icslint@${{ github.action_ref || 'main' }}"
+    - name: Run icslint
+      shell: bash
+      run: |
+        flags=()
+        if [ "${{ inputs.strict }}" = "true" ]; then flags+=(--strict); fi
+        icslint check "${{ inputs.path }}" --format "${{ inputs.format }}" "${flags[@]}"
