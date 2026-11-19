@@ -32,7 +32,7 @@ icslint check path/to/calendars --format json
 
 ## Reading the results
 
-Findings print one per line: `file:line: ERROR|WARNING RULE-ID [COMPONENT[UID=...]] explanation (source)`. The last line is the tally: `icslint: N file(s) checked, E errors, W warning(s)`, or `icslint: N file(s) checked, no findings` when every file is clean. Severity is calibrated: an ERROR is an RFC MUST / MUST NOT / REQUIRED / ABNF violation, or a hard import failure a named source documents; a WARNING is an RFC SHOULD / SHOULD NOT, an importer-documented soft failure, or an RFC MUST that importers routinely waive through a defined fallback. The exit code is the verdict:
+Findings print one per line: `file:line: ERROR|WARNING RULE-ID [COMPONENT[UID=...]] explanation (source)`. The last line is the tally, printed with real singular/plural forms and both counts always shown: `icslint: 1 file checked, 2 errors, 1 warning`, `icslint: 1 file checked, 1 error, 0 warnings`, `icslint: 2 files checked, 2 errors, 1 warning` — or `icslint: 1 file checked, no findings` when every file is clean. Severity is calibrated: an ERROR is an RFC MUST / MUST NOT / REQUIRED / ABNF violation, or a hard import failure a named source documents; a WARNING is an RFC SHOULD / SHOULD NOT, an importer-documented soft failure, or an RFC MUST that importers routinely waive through a defined fallback. The exit code is the verdict:
 
 - `0` — no errors (warnings allowed, unless `--strict` is on).
 - `1` — at least one error, or any warning under `--strict`.
