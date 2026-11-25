@@ -49,10 +49,12 @@ scoop install icslint
 ## Usage
 
 ```console
-$ icslint check <file-or-folder> [--strict] [--format text|json]
+$ icslint check <file-or-folder> [<file-or-folder> ...] [--strict] [--format text|json]
 ```
 
-- A folder is scanned recursively for `*.ics` files (case-insensitive).
+- Pass any mix of files and folders, e.g. `icslint check examples/broken.ics examples/clean.ics`.
+  Folders are scanned recursively for `*.ics` files (case-insensitive).
+  Overlapping paths count once, and one tally covers all inputs.
 - Every finding prints the file, the physical line where the offending
   content line starts, the component, the rule ID, the severity, a
   plain-language explanation, and its source — an RFC 5545 section, or
