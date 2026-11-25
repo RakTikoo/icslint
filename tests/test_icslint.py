@@ -8,6 +8,7 @@ anti-rules pinned individually, and the CLI contract (exit codes,
 --strict, --format json, folder scanning, no tracebacks).
 """
 
+import errno
 import glob
 import io
 import json
@@ -15,6 +16,7 @@ import os
 import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
+from unittest.mock import patch
 
 from icslint.cli import main
 from icslint.core import RULES, lint_bytes
@@ -335,6 +337,50 @@ class TestCli(unittest.TestCase):
         self.assertEqual(code, 0)
         code, _o, _e = _run_cli(["check", "--strict", path])
         self.assertEqual(code, 1)
+
+    def test_two_files_match_a_folder_run(self):
+        broken = os.path.join(EXAMPLES, "broken.ics")
+        clean = os.path.join(EXAMPLES, "clean.ics")
+        result = _run_cli(["check", broken, clean])
+        self.assertEqual(result, _run_cli(["check", EXAMPLES]))
+        code, out, err = result
+        self.assertEqual((code, err), (1, ""))
+        self.assertEqual(out.splitlines()[-1],
+                         "icslint: 2 files checked, 4 errors, 1 warning")
+
+    def test_file_and_folder_share_a_json_tally(self):
+        warning = os.path.join(VIOLATIONS, "w01.ics")
+        code, out, err = _run_cli(
+            ["check", warning, EXAMPLES, "--format", "json"])
+        self.assertEqual((code, err), (1, ""))
+        tally = json.loads(out)
+        self.assertEqual((tally["files_checked"], tally["errors"],
+                          tally["warnings"]), (3, 4, 2))
+
+    def test_overlapping_paths_keep_first_filename(self):
+        broken = os.path.join(EXAMPLES, ".", "broken.ics")
+        code, out, err = _run_cli(["check", broken, broken, EXAMPLES,
+                                   "--format", "json"])
+        self.assertEqual((code, err), (1, ""))
+        tally = json.loads(out)
+        self.assertEqual(tally["files_checked"], 2)
+        self.assertEqual([f["file"] for f in tally["findings"]], [broken] * 5)
+
+    def test_missing_path_among_valid_paths(self):
+        missing = os.path.join(EXAMPLES, "missing.ics")
+        code, out, err = _run_cli(["check", EXAMPLES, missing, EXAMPLES])
+        self.assertEqual((code, out), (2, ""))
+        self.assertEqual(err.splitlines(),
+                         [f"icslint: no such file or folder: {missing}"])
+
+    def test_unreadable_directory_among_valid_paths(self):
+        clean = os.path.join(EXAMPLES, "clean.ics")
+        error = PermissionError(errno.EACCES, "Permission denied", EXAMPLES)
+        with patch("os.scandir", side_effect=error):
+            code, out, err = _run_cli(["check", clean, EXAMPLES])
+        self.assertEqual((code, out), (2, ""))
+        self.assertEqual(err.splitlines(),
+                         [f"icslint: cannot read {EXAMPLES}: Permission denied"])
 
     def test_json_format(self):
         code, out, _err = _run_cli(

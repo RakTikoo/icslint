@@ -19,14 +19,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     sub = p.add_subparsers(dest="command", required=True)
     check = sub.add_parser(
-        "check", help="check one .ics file, or every .ics file in a folder")
-    check.add_argument("path", help="an .ics file, or a folder scanned "
-                       "recursively for *.ics files")
+        "check", help="check .ics files and folders")
+    check.add_argument("paths", metavar="path", nargs="+",
+                       help="a file, or a folder scanned recursively "
+                       "for *.ics files")
     check.add_argument("--strict", action="store_true",
                        help="treat warnings as failures too (exit 1)")
     check.add_argument("--format", choices=("text", "json"), default="text",
                        help="output format (default: text)")
     return p
+
+
+def _raise_walk_error(exc: OSError):
+    raise exc
 
 
 def _collect_files(path: str):
@@ -38,7 +43,7 @@ def _collect_files(path: str):
         return [path]
     if os.path.isdir(path):
         found = []
-        for root, _dirs, names in os.walk(path):
+        for root, _dirs, names in os.walk(path, onerror=_raise_walk_error):
             for name in names:
                 if name.lower().endswith(".ics"):
                     found.append(os.path.join(root, name))
@@ -47,21 +52,32 @@ def _collect_files(path: str):
 
 
 def _run_check(args) -> int:
-    files = _collect_files(args.path)
-    if files is None:
-        print(f"icslint: no such file or folder: {args.path}", file=sys.stderr)
+    files = []
+    try:
+        for path in args.paths:
+            found = _collect_files(path)
+            if found is None:
+                print(f"icslint: no such file or folder: {path}", file=sys.stderr)
+                return 2
+            files.extend(found)
+        if len(args.paths) > 1:
+            # Keep the first spelling of each file for diagnostics.
+            unique = {}
+            for path in files:
+                key = os.path.normcase(os.path.realpath(path))
+                unique.setdefault(key, path)
+            files = list(unique.values())
+        findings = []
+        for path in files:
+            findings.extend(lint_file(path))
+    except OSError as exc:
+        print(f"icslint: cannot read {exc.filename or path}: "
+              f"{exc.strerror or exc}",
+              file=sys.stderr)
         return 2
     if not files:
-        print(f"icslint: no .ics files found under {args.path}")
+        print(f"icslint: no .ics files found under {', '.join(args.paths)}")
         return 0
-    findings = []
-    for path in files:
-        try:
-            findings.extend(lint_file(path))
-        except OSError as exc:
-            print(f"icslint: cannot read {path}: {exc.strerror or exc}",
-                  file=sys.stderr)
-            return 2
     findings.sort(key=lambda f: f.sort_key())
     errors = sum(1 for f in findings if f.severity == "ERROR")
     warnings = sum(1 for f in findings if f.severity == "WARNING")

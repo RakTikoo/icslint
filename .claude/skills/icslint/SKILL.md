@@ -21,10 +21,12 @@ This provides the `icslint` command.
 
 ## Run
 
-Check one file, or a folder (scanned recursively for `*.ics` files):
+Pass one or more files or folders. Folders are scanned recursively for
+`*.ics` files. If paths overlap, the same file is checked once.
 
 ```bash
 icslint check examples/broken.ics
+icslint check examples/broken.ics examples/clean.ics
 icslint check path/to/calendars --format json
 ```
 
